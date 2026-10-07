@@ -1,0 +1,3 @@
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {demographics,topics,SURVEY_VERSION} from '../lib/survey.ts';
+const rows=Array.from({length:25},(_,i)=>({survey_uuid:`MOCK-${i+1}`,survey_version:SURVEY_VERSION,...Object.fromEntries([...demographics,...topics].map(q=>[q.key,i%q.options.length]))}));mkdirSync('outputs',{recursive:true});writeFileSync('outputs/mock-responses.json',JSON.stringify({warning:'SYNTHETIC TEST DATA. Not counted in research or stored in the live database.',rows},null,2));console.log('Generated 25 clearly labeled mocks in ignored outputs/mock-responses.json. No database was modified.');

@@ -1,0 +1,14 @@
+const KEY='civic-poll-fingerprint-v1';
+const hex=(bytes:ArrayBuffer)=>Array.from(new Uint8Array(bytes),x=>x.toString(16).padStart(2,'0')).join('');
+export async function browserFingerprint():Promise<string>{
+ try{const old=localStorage.getItem(KEY);if(old&&/^[a-f0-9]{64}$/.test(old))return old;}catch{}
+ const signals:Record<string,unknown>={version:1,ua:navigator.userAgent,language:navigator.language,screen:[Math.min(screen.width,screen.height),Math.max(screen.width,screen.height),screen.colorDepth,window.devicePixelRatio],cores:navigator.hardwareConcurrency};
+ try{const c=document.createElement('canvas');c.width=240;c.height=60;const ctx=c.getContext('2d')!;ctx.fillStyle='#193b72';ctx.fillRect(0,0,240,60);ctx.font='18px Arial';ctx.fillStyle='#e8a342';ctx.fillText('Civic research 2305',8,32);signals.canvas=c.toDataURL();}catch{signals.canvas='unavailable';}
+ try{const gl=document.createElement('canvas').getContext('webgl');const ext=gl?.getExtension('WEBGL_debug_renderer_info');signals.webgl=gl?[gl.getParameter(gl.VERSION),ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)]:['unavailable'];gl?.getExtension('WEBGL_lose_context')?.loseContext();}catch{signals.webgl='unavailable';}
+ try{const audio=new OfflineAudioContext(1,4096,44100);const oscillator=audio.createOscillator();const compressor=audio.createDynamicsCompressor();oscillator.type='triangle';oscillator.frequency.value=10000;oscillator.connect(compressor);compressor.connect(audio.destination);oscillator.start();const rendered=await Promise.race([audio.startRendering(),new Promise<null>(resolve=>setTimeout(()=>resolve(null),700))]);signals.audio=rendered?Array.from(rendered.getChannelData(0).slice(3000,3050)).map(x=>x.toFixed(7)):'unavailable';}catch{signals.audio='unavailable';}
+ // A random installation ID avoids treating identical browser configurations as one person.
+ // The stored composite still changes when storage is cleared: this is explicitly best-effort.
+ let installation:string;try{installation=localStorage.getItem(KEY+'-installation')??crypto.randomUUID();localStorage.setItem(KEY+'-installation',installation);}catch{installation=crypto.randomUUID();}signals.installation=installation;
+ const result=hex(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(signals))));try{localStorage.setItem(KEY,result);}catch{}return result;
+}
+export function clientRateLimit(){try{const key='civic-poll-attempts',now=Date.now();const old=JSON.parse(localStorage.getItem(key)??'[]');const timestamps=Array.isArray(old)?old.filter((v:unknown)=>typeof v==='number'&&v>now-60000):[];if(timestamps.length>=5)throw new Error('Please wait a minute before trying again.');localStorage.setItem(key,JSON.stringify([...timestamps,now]));}catch(e){if(e instanceof Error&&e.message.startsWith('Please wait'))throw e;}}

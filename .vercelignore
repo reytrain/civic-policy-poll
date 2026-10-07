@@ -1,0 +1,10 @@
+.git
+.env*
+!.env.example
+*.db
+*.db-*
+node_modules
+.next
+outputs
+
+.work

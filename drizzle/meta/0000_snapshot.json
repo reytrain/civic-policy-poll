@@ -1,0 +1,626 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "82040416-2ea9-4b20-b9ab-a44d6c4cdef8",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "DemographicResponses": {
+      "name": "DemographicResponses",
+      "columns": {
+        "survey_id": {
+          "name": "survey_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "demo_age": {
+          "name": "demo_age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "demo_gender": {
+          "name": "demo_gender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "demo_education": {
+          "name": "demo_education",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "demo_income": {
+          "name": "demo_income",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "demo_ideology": {
+          "name": "demo_ideology",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "demo_employment": {
+          "name": "demo_employment",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "demo_news": {
+          "name": "demo_news",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "demo_community": {
+          "name": "demo_community",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "DemographicResponses_survey_id_VoterNullifiers_survey_id_fk": {
+          "name": "DemographicResponses_survey_id_VoterNullifiers_survey_id_fk",
+          "tableFrom": "DemographicResponses",
+          "tableTo": "VoterNullifiers",
+          "columnsFrom": [
+            "survey_id"
+          ],
+          "columnsTo": [
+            "survey_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "valid_demo_age": {
+          "name": "valid_demo_age",
+          "value": "\"demo_age\">=0 AND \"demo_age\"<5"
+        },
+        "valid_demo_gender": {
+          "name": "valid_demo_gender",
+          "value": "\"demo_gender\">=0 AND \"demo_gender\"<3"
+        },
+        "valid_demo_education": {
+          "name": "valid_demo_education",
+          "value": "\"demo_education\">=0 AND \"demo_education\"<4"
+        },
+        "valid_demo_income": {
+          "name": "valid_demo_income",
+          "value": "\"demo_income\">=0 AND \"demo_income\"<5"
+        },
+        "valid_demo_ideology": {
+          "name": "valid_demo_ideology",
+          "value": "\"demo_ideology\">=0 AND \"demo_ideology\"<7"
+        },
+        "valid_demo_employment": {
+          "name": "valid_demo_employment",
+          "value": "\"demo_employment\">=0 AND \"demo_employment\"<6"
+        },
+        "valid_demo_news": {
+          "name": "valid_demo_news",
+          "value": "\"demo_news\">=0 AND \"demo_news\"<5"
+        },
+        "valid_demo_community": {
+          "name": "valid_demo_community",
+          "value": "\"demo_community\">=0 AND \"demo_community\"<3"
+        }
+      }
+    },
+    "RateLimits": {
+      "name": "RateLimits",
+      "columns": {
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "count": {
+          "name": "count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_rate_expiry": {
+          "name": "idx_rate_expiry",
+          "columns": [
+            "expires_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "SurveySessions": {
+      "name": "SurveySessions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fingerprint_hash": {
+          "name": "fingerprint_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nullifier_hash": {
+          "name": "nullifier_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "stage": {
+          "name": "stage",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "demographics_hash": {
+          "name": "demographics_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_sessions_created": {
+          "name": "idx_sessions_created",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "session_stage": {
+          "name": "session_stage",
+          "value": "\"SurveySessions\".\"stage\" in (0,1)"
+        }
+      }
+    },
+    "TopicResponses": {
+      "name": "TopicResponses",
+      "columns": {
+        "survey_id": {
+          "name": "survey_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q01_bailout_equity": {
+          "name": "q01_bailout_equity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q02_clawbacks": {
+          "name": "q02_clawbacks",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q03_board_oversight": {
+          "name": "q03_board_oversight",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q04_tax_abatements": {
+          "name": "q04_tax_abatements",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q05_buyback_restrictions": {
+          "name": "q05_buyback_restrictions",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q06_ag_subsidies": {
+          "name": "q06_ag_subsidies",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q07_monopoly_divestiture": {
+          "name": "q07_monopoly_divestiture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q08_platform_neutrality": {
+          "name": "q08_platform_neutrality",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q09_pharma_consolidation": {
+          "name": "q09_pharma_consolidation",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q10_revolving_door": {
+          "name": "q10_revolving_door",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q11_contractor_donations": {
+          "name": "q11_contractor_donations",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q12_agency_funding": {
+          "name": "q12_agency_funding",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q13_nih_pricing": {
+          "name": "q13_nih_pricing",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q14_compulsory_licensing": {
+          "name": "q14_compulsory_licensing",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q15_cost_plus_audits": {
+          "name": "q15_cost_plus_audits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q16_right_to_repair": {
+          "name": "q16_right_to_repair",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q17_noncompetes": {
+          "name": "q17_noncompetes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q18_subsidy_parity": {
+          "name": "q18_subsidy_parity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q19_public_utilities": {
+          "name": "q19_public_utilities",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "q20_toll_monopolies": {
+          "name": "q20_toll_monopolies",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "TopicResponses_survey_id_VoterNullifiers_survey_id_fk": {
+          "name": "TopicResponses_survey_id_VoterNullifiers_survey_id_fk",
+          "tableFrom": "TopicResponses",
+          "tableTo": "VoterNullifiers",
+          "columnsFrom": [
+            "survey_id"
+          ],
+          "columnsTo": [
+            "survey_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "valid_q01_bailout_equity": {
+          "name": "valid_q01_bailout_equity",
+          "value": "\"q01_bailout_equity\">=0 AND \"q01_bailout_equity\"<5"
+        },
+        "valid_q02_clawbacks": {
+          "name": "valid_q02_clawbacks",
+          "value": "\"q02_clawbacks\">=0 AND \"q02_clawbacks\"<5"
+        },
+        "valid_q03_board_oversight": {
+          "name": "valid_q03_board_oversight",
+          "value": "\"q03_board_oversight\">=0 AND \"q03_board_oversight\"<5"
+        },
+        "valid_q04_tax_abatements": {
+          "name": "valid_q04_tax_abatements",
+          "value": "\"q04_tax_abatements\">=0 AND \"q04_tax_abatements\"<5"
+        },
+        "valid_q05_buyback_restrictions": {
+          "name": "valid_q05_buyback_restrictions",
+          "value": "\"q05_buyback_restrictions\">=0 AND \"q05_buyback_restrictions\"<5"
+        },
+        "valid_q06_ag_subsidies": {
+          "name": "valid_q06_ag_subsidies",
+          "value": "\"q06_ag_subsidies\">=0 AND \"q06_ag_subsidies\"<5"
+        },
+        "valid_q07_monopoly_divestiture": {
+          "name": "valid_q07_monopoly_divestiture",
+          "value": "\"q07_monopoly_divestiture\">=0 AND \"q07_monopoly_divestiture\"<5"
+        },
+        "valid_q08_platform_neutrality": {
+          "name": "valid_q08_platform_neutrality",
+          "value": "\"q08_platform_neutrality\">=0 AND \"q08_platform_neutrality\"<5"
+        },
+        "valid_q09_pharma_consolidation": {
+          "name": "valid_q09_pharma_consolidation",
+          "value": "\"q09_pharma_consolidation\">=0 AND \"q09_pharma_consolidation\"<5"
+        },
+        "valid_q10_revolving_door": {
+          "name": "valid_q10_revolving_door",
+          "value": "\"q10_revolving_door\">=0 AND \"q10_revolving_door\"<5"
+        },
+        "valid_q11_contractor_donations": {
+          "name": "valid_q11_contractor_donations",
+          "value": "\"q11_contractor_donations\">=0 AND \"q11_contractor_donations\"<5"
+        },
+        "valid_q12_agency_funding": {
+          "name": "valid_q12_agency_funding",
+          "value": "\"q12_agency_funding\">=0 AND \"q12_agency_funding\"<5"
+        },
+        "valid_q13_nih_pricing": {
+          "name": "valid_q13_nih_pricing",
+          "value": "\"q13_nih_pricing\">=0 AND \"q13_nih_pricing\"<5"
+        },
+        "valid_q14_compulsory_licensing": {
+          "name": "valid_q14_compulsory_licensing",
+          "value": "\"q14_compulsory_licensing\">=0 AND \"q14_compulsory_licensing\"<5"
+        },
+        "valid_q15_cost_plus_audits": {
+          "name": "valid_q15_cost_plus_audits",
+          "value": "\"q15_cost_plus_audits\">=0 AND \"q15_cost_plus_audits\"<5"
+        },
+        "valid_q16_right_to_repair": {
+          "name": "valid_q16_right_to_repair",
+          "value": "\"q16_right_to_repair\">=0 AND \"q16_right_to_repair\"<5"
+        },
+        "valid_q17_noncompetes": {
+          "name": "valid_q17_noncompetes",
+          "value": "\"q17_noncompetes\">=0 AND \"q17_noncompetes\"<5"
+        },
+        "valid_q18_subsidy_parity": {
+          "name": "valid_q18_subsidy_parity",
+          "value": "\"q18_subsidy_parity\">=0 AND \"q18_subsidy_parity\"<5"
+        },
+        "valid_q19_public_utilities": {
+          "name": "valid_q19_public_utilities",
+          "value": "\"q19_public_utilities\">=0 AND \"q19_public_utilities\"<5"
+        },
+        "valid_q20_toll_monopolies": {
+          "name": "valid_q20_toll_monopolies",
+          "value": "\"q20_toll_monopolies\">=0 AND \"q20_toll_monopolies\"<5"
+        }
+      }
+    },
+    "VoterNullifiers": {
+      "name": "VoterNullifiers",
+      "columns": {
+        "survey_id": {
+          "name": "survey_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "session_id": {
+          "name": "session_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nullifier_hash": {
+          "name": "nullifier_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "device_hash": {
+          "name": "device_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "active": {
+          "name": "active",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "duration_ms": {
+          "name": "duration_ms",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "version": {
+          "name": "version",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "VoterNullifiers_session_id_unique": {
+          "name": "VoterNullifiers_session_id_unique",
+          "columns": [
+            "session_id"
+          ],
+          "isUnique": true
+        },
+        "idx_active_nullifier": {
+          "name": "idx_active_nullifier",
+          "columns": [
+            "nullifier_hash"
+          ],
+          "isUnique": true,
+          "where": "\"VoterNullifiers\".\"active\"=1"
+        },
+        "idx_active_device": {
+          "name": "idx_active_device",
+          "columns": [
+            "device_hash"
+          ],
+          "isUnique": true,
+          "where": "\"VoterNullifiers\".\"active\"=1"
+        },
+        "idx_voters_date": {
+          "name": "idx_voters_date",
+          "columns": [
+            "submitted_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "VoterNullifiers_session_id_SurveySessions_id_fk": {
+          "name": "VoterNullifiers_session_id_SurveySessions_id_fk",
+          "tableFrom": "VoterNullifiers",
+          "tableTo": "SurveySessions",
+          "columnsFrom": [
+            "session_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "minimum_duration": {
+          "name": "minimum_duration",
+          "value": "\"VoterNullifiers\".\"duration_ms\">=15000"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

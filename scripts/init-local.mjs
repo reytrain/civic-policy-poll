@@ -1,0 +1,3 @@
+import {existsSync,writeFileSync} from 'node:fs';import {randomBytes} from 'node:crypto';
+if(process.env.VERCEL||process.env.CI)throw new Error('Local secret generation is forbidden in hosted builds.');
+if(existsSync('.env.local'))console.log('Existing local configuration preserved.');else{writeFileSync('.env.local',`ADMIN_SECRET_KEY=${randomBytes(24).toString('base64url')}\nSERVER_SALT=${randomBytes(32).toString('hex')}\nAPP_ORIGIN=http://127.0.0.1:5173\nTURSO_DATABASE_URL=file:poll-local.db\nTURSO_AUTH_TOKEN=\nTRUSTED_IP_HEADER=\n`,{mode:0o600});console.log('Created ignored local settings. Values not printed.');}

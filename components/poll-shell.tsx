@@ -1,0 +1,2 @@
+export function Masthead(){return <header className="masthead"><a href="/" className="wordmark"><span className="brand-mark">C</span>Civic Policy Poll</a><span>GOVT 2305 · Student research</span></header>}
+export function Footer(){return <footer className="footer"><span>Voluntary student research. No right or wrong answers.</span><div><a href="/questionnaire">Printable questionnaire</a><span aria-hidden="true"> · </span><a href="/admin">Researcher sign-in</a></div></footer>}
