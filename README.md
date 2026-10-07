@@ -45,3 +45,11 @@ The original Sites source/deployment is preserved separately. This repository do
 ## Research
 
 Adults worldwide, no names/accounts, 8 demographic questions then 20 policy statements. At least 20 real people must be polled for GOVT 2305. Printed Sheet A and Sheet B are separate, but paper responses are not imported. This convenience sample is not nationally representative. See REPORT_GUIDE.md. Keep raw exports private and agree a retention/deletion date with the instructor. Source is public; responses and secrets are not.
+
+## Published deployment
+
+Production: https://civic-policy-poll.vercel.app/
+
+The initial hosted schema was applied without exporting Sensitive database credentials. The temporary admin initializer was removed after integrity checks; its database ledger contains a permanent `__setup_locked__` marker to prevent reactivation through an old deployment. Preserve this marker in database backups/restores. Future migrations remain an explicit, reviewed operation through the migration script, never an automatic build step.
+
+The production researcher passkey is the original project’s configured ADMIN_SECRET_KEY; it is separate from this edition’s generated local test password. No key value is committed here.
